@@ -1,0 +1,50 @@
+#include <Adafruit_NeoPixel.h>
+#include "IRremote.h"
+#define NUM_PIXELS 48
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(48, 3, NEO_GRB +NEO_KHZ800);
+
+int receiver = 11;
+int relayPin = 4;
+int speakerPin = 5;
+
+IRrecv irrecv(receiver);
+decode_results results;
+
+void setup()
+{
+pinMode(speakerPin, OUTPUT);
+pinMode(receiver, INPUT);
+pinMode(relayPin, OUTPUT);
+Serial.begin(9600);
+Serial.println("IR Receiver Raw Data + Button Decode Test");
+irrecv.enableIRIn();
+for (int i = 1;i < 254;i++)
+{
+strip.begin();
+strip.show();
+}
+}
+
+void loop()
+{
+if (irrecv.decode(&results))
+{
+Serial.println(results.value, HEX);
+translateIR();
+irrecv.resume();
+}
+}
+
+void translateIR()
+{
+switch(results.value)
+{
+case 0x295:
+Serial.println(" Hit! ");
+digitalWrite(relayPin, HIGH);
+delay(8000);
+digitalWrite(relayPin, LOW);
+break;
+}
+delay(1);
+}
