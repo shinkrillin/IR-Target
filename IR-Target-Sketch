@@ -57,3 +57,37 @@ delayMicroseconds(atone);
 digitalWrite(speakerPin, LOW);
 delayMicroseconds(atone);
 }
+
+void knightRider(uint16_t cycles, uint16_t speed, uint8_t width, uint32_t color)
+{
+uint32_t old_val[NUM_PIXELS];
+for(int i = 0; i < cycles; i++)
+{
+for (int count = 0; count<NUM_PIXELS; count++)
+{
+strip.setPixelColor(count, color);
+strip.show();
+delay(speed);
+old_val[count] = color;
+for(int x = count; x>0; x--)
+{
+old_val[x-1] = dimColor(old_val[x-1], width);
+strip.setPixelColor(x-1, old_val[x-1]);
+strip.show();
+}
+}
+}
+}
+
+void clearStrip()
+{
+for( int i = 0; i<NUM_PIXELS; i++)
+{
+strip.setPixelColor(i, 0x000000);
+strip.show();
+}
+}
+uint32_t dimColor(uint32_t color, uint8_t width)
+{
+return (((color&0xFF0000)/width)&0xFF0000) + (((color&0x00FF00)/width)&0x00FF00) + (((color&0x0000FF)/width)&0x0000FF);
+}
