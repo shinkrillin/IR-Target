@@ -91,3 +91,50 @@ uint32_t dimColor(uint32_t color, uint8_t width)
 {
 return (((color&0xFF0000)/width)&0xFF0000) + (((color&0x00FF00)/width)&0x00FF00) + (((color&0x0000FF)/width)&0x0000FF);
 }
+
+uint32_t colorWheel(byte WheelPos)
+{
+byte state = WheelPos / 21;
+switch(state)
+{
+case 0:
+return strip.Color(255, 0, 255 - ((((WheelPos % 21) + 1) * 6) + 127));
+break;
+case 1:
+return strip.Color(255, ((WheelPos % 21) + 1) * 6, 0);
+break;
+case 2:
+return strip.Color(255, (((WheelPos % 21) + 1) * 6) + 127, 0);
+break;
+case 3:
+return strip.Color(255 - (((WheelPos % 21) + 1) * 6), 255, 0);
+break;
+case 4:
+return strip.Color(255 - (((WheelPos % 21) + 1) * 6) + 127, 255, 0);
+break;
+case 5:
+return strip.Color(0, 255, ((WheelPos % 21) + 1) * 6);
+break;
+case 6:
+return strip.Color(0, 255, (((WheelPos %21) + 1) * 6) + 127);
+break;
+case 7:
+return strip.Color(0,255 - (((WheelPos % 21) + 1) * 6), 255);
+break;
+case 8:
+return strip.Color(0, 255 - ((((WheelPos % 21) + 1) * 6) + 127), 255);
+break;
+case 9:
+return strip.Color(((WheelPos % 21) + 1) * 6, 0, 255);
+break;
+case 10:
+return strip.Color((((WheelPos % 21) + 1) * 6) + 127, 0, 255);
+break;
+case 11:
+return strip.Color(255, 0, 255 - (((WheelPos % 21) + 1) * 6));
+break;
+default:
+return strip.Color(0, 0, 0);
+break;
+}
+}
